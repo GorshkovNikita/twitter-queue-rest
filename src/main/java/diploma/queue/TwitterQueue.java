@@ -29,6 +29,6 @@ public class TwitterQueue {
         if (tweets.size() != 0)
             return tweets.poll();
         else
-            return "{\"queue\": \"empty\"}";
+            return "empty";
     }
 }
