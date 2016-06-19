@@ -6,7 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Nikita on 18.06.2016.
@@ -17,7 +17,7 @@ public class TwitterQueue {
     private BlockingQueue<String> tweets;
 
     public TwitterQueue() {
-        this.tweets = new LinkedBlockingDeque<>();
+        this.tweets = new LinkedBlockingQueue<>();
         Thread readingThread = new Thread(new Reading(Paths.get("D:\\MSU\\diploma\\tweets.txt"), this.tweets));
         readingThread.setDaemon(true);
         readingThread.start();
