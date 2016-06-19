@@ -1,17 +1,34 @@
 package diploma.queue;
 
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Created by Nikita on 18.06.2016.
  */
-@Path("/hello")
+@Singleton
+@Path("/")
 public class TwitterQueue {
+    private BlockingQueue<String> tweets;
+
+    public TwitterQueue() {
+        this.tweets = new LinkedBlockingDeque<>();
+        Thread readingThread = new Thread(new Reading(Paths.get("D:\\MSU\\diploma\\tweets.txt"), this.tweets));
+        readingThread.setDaemon(true);
+        readingThread.start();
+    }
+
     @GET
-    @Produces("text/plain")
+    @Produces("application/json")
     public String getClichedMessage() {
-        return "Hello World";
+        if (tweets.size() != 0)
+            return tweets.poll();
+        else
+            return "{\"queue\": \"empty\"}";
     }
 }
