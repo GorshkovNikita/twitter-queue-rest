@@ -1,7 +1,6 @@
 package diploma.queue;
 
-import java.io.IOError;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.BlockingQueue;
@@ -19,18 +18,14 @@ public class Reading implements Runnable {
     }
 
     public void run() {
-        try {
-            long numLines = Files.lines(path).count();
-            Object[] strings = Files.lines(path).toArray();
-            for (int i = 0; i < numLines; i++) {
-                queue.add(strings[i].toString());
+        try (BufferedReader br = new BufferedReader(new FileReader(path.toString()))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                queue.add(line);
                 Thread.sleep(5000);
             }
         }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        catch (InterruptedException ex) {
+        catch (InterruptedException | IOException ex) {
             ex.printStackTrace();
         }
     }
