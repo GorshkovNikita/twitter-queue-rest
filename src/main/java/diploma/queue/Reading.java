@@ -22,7 +22,7 @@ public class Reading implements Runnable {
             String line;
             while ((line = br.readLine()) != null) {
                 queue.add(line);
-                Thread.sleep(5000);
+                Thread.sleep(1);
             }
         }
         catch (InterruptedException | IOException ex) {
